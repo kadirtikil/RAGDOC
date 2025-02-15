@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState, useRef } from "react"
 
+import { motion } from 'motion/react'; 
+
 import Scramble from "../../kadirassets/TScramble";
 import SignUp from "./components/Signup";
 import SignIn from "./components/Signin";
@@ -23,7 +25,42 @@ export default function Welcome() {
     useEffect(() => {
         const titleScramble = new Scramble(divRef.current, "RAGDOC")
         titleScramble.run(true)
-        console.log("running")
+
+        // if(signin){
+        //     Object.assign(signinRef.current!.style, {
+        //         backgroundColor: "red"
+        //     })
+        //     Object.assign(signupRef.current!.style, {
+        //         backgroundColor: 'blue'
+        //     })
+        // } else {
+        //     Object.assign(signinRef.current!.style, {
+        //         backgroundColor: "blue"
+        //     })
+        //     Object.assign(signupRef.current!.style, {
+        //         backgroundColor: 'red'
+        //     })
+        // }
+
+        if(signin && signinRef.current) {
+            signinRef.current.animate(
+                [
+                    { opacity: 0, transform: "translateY(-20px)" }, // Start
+                    { opacity: 1, transform: "translateY(0)" },     // End
+                ],
+                { duration: 500, easing: "ease-out" }
+            )
+        } else if(!signin && signupRef.current){
+            signupRef.current.animate(
+                [
+                    { opacity: 0, transform: "translateY(-20px)" }, // Start
+                    { opacity: 1, transform: "translateY(0)" },     // End
+                ],
+                { duration: 500, easing: "ease-out" }
+            )
+            
+        }
+
     })
 
     return(
@@ -44,14 +81,19 @@ export default function Welcome() {
             ">
                 <div className="
                     row-start-1 row-end-2 col-start-1 col-end-11 bg-gray-600
-                    grid grid-rows-1 grid-col-3 
+                    grid grid-rows-1 grid-col-3 rounded-tl-lg rounded-tr-lg
                 ">
-                    <div className="col-start-1 col-end-2 flex place-content-center place-items-center" onClick={switchToSignIn}>sign in</div>
+                    <div className="col-start-1 col-end-2 flex place-content-center place-items-center" onClick={switchToSignIn}
+                        ref={signinRef}
+                    >sign in</div>
                     <div className="col-start-2 col-end-3 flex place-content-center place-items-center"> | </div>
-                    <div className="col-start-3 col-end-4 flex place-content-center place-items-center" onClick={switchToSignUp}>sign up</div>
+                    <div className="col-start-3 col-end-4 flex place-content-center place-items-center" onClick={switchToSignUp}
+                        ref={signupRef}
+                    >sign up</div>
                 </div>
-                <div className="row-start-2 row-end-11 col-start-1 col-end-11 bg-yellow-300
-
+                <div className="
+                    row-start-2 row-end-11 col-start-1 col-end-11 
+                    bg-gray-400 rounded-bl-lg rounded-br-lg
                 ">
                     {signin ? <SignUp /> : <SignIn/>} 
                 </div>
